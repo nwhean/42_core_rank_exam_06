@@ -2,8 +2,36 @@
 #include <string.h>
 #include <unistd.h>
 #include <netdb.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+
+
+// function prototypes
+void	ft_putstr_fd(const char *s, int fd);
+void	ft_error(const char *s);
+void	ft_fatal();
+
+
+/* Write string 's' to file descriptor 'fd' */
+void	ft_putstr_fd(const char *s, int fd)
+{
+	write(fd, s, strlen(s));
+}
+
+/* Write error message 's' to stderr and exit */
+void	ft_error(const char *s)
+{
+	ft_putstr_fd(s, 2);
+	exit(1);
+}
+
+/* Write "Fatal error\n" to stderror and exit */
+void	ft_fatal()
+{
+	ft_error("Fatal error\n");
+}
 
 int extract_message(char **buf, char **msg)
 {
@@ -53,8 +81,12 @@ char *str_join(char *buf, char *add)
 }
 
 
-int main() {
-	int sockfd, connfd, len;
+int main(int argc, char **argv) {
+	if (argc != 2)
+		ft_error("Wrong number of arguments\n");
+
+	int sockfd, connfd;
+	socklen_t	len;
 	struct sockaddr_in servaddr, cli; 
 
 	// socket create and verification 
@@ -70,7 +102,7 @@ int main() {
 	// assign IP, PORT 
 	servaddr.sin_family = AF_INET; 
 	servaddr.sin_addr.s_addr = htonl(2130706433); //127.0.0.1
-	servaddr.sin_port = htons(8081); 
+	servaddr.sin_port = htons(atoi(argv[1]));
   
 	// Binding newly created socket to given IP and verification 
 	if ((bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr))) != 0) { 
@@ -92,3 +124,4 @@ int main() {
     else
         printf("server acccept the client...\n");
 }
+
