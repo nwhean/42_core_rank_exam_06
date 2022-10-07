@@ -41,6 +41,10 @@ int			get_max_fd(int listener);
 void		wait_events(fd_set *rfds, fd_set *wfds, int listener);
 void		manage_events(fd_set *rfds, fd_set *wfds, int listener);
 
+int			extract_message(t_client *client);
+void		broadcast(int source, char *str);
+int			transmit(t_client *client);
+
 /* Write string 's' to file descriptor 'fd' */
 void	ft_putstr_fd(const char *s, int fd)
 {
@@ -97,7 +101,10 @@ t_client	*client_new(int fd)
 void	client_add(t_client *client)
 {
 	t_client	*this;
+	char		buffer[BUFFER_SIZE];
 
+	sprintf(buffer, "client %d just arrived\n", client->id);
+	broadcast(-1, buffer);
 	if (g_clients == NULL)
 		g_clients = client;
 	else
@@ -114,6 +121,7 @@ void	client_add(t_client *client)
 void	client_remove(t_client *client)
 {
 	t_client	*this;
+	char		buffer[BUFFER_SIZE];
 
 	if (g_clients == client)
 		g_clients = client->next;
@@ -124,6 +132,8 @@ void	client_remove(t_client *client)
 			this = this->next;
 		this->next = client->next;
 	}
+	sprintf(buffer, "client %d just left\n", client->id);
+	broadcast(-1, buffer);
 	close(client->fd);
 	free(client);
 }
@@ -236,8 +246,11 @@ void	manage_events(fd_set *rfds, fd_set *wfds, int listener)
 			// dummy operation to prevent infinite loop
 			if (this->offset_in == 0)
 			{
-				client_remove(this);
-				this = NULL;
+				if (!extract_message(this))
+				{
+					client_remove(this);
+					this = NULL;
+				}
 			}
 		}
 
@@ -250,6 +263,69 @@ void	manage_events(fd_set *rfds, fd_set *wfds, int listener)
 		}
 		this = next;
 	}
+}
+
+/* Calls recv and broadcast messages to other clients */
+int	extract_message(t_client *client)
+{
+	ssize_t	byte;
+	char	buffer[BUFFER_SIZE];
+	char	*end;
+	int		processed;
+	int		len;
+
+	byte = recv(client->fd, client->buf_in + client->offset_in,
+			BUFFER_SIZE - client->offset_in - 1, 0);
+	if (byte <= 0)
+		return (0);
+	client->offset_in += byte;
+	client->buf_in[client->offset_in] = '\0';
+	processed = 0;
+	end = strstr(client->buf_in + processed, "\n");
+	while (end != NULL)
+	{
+		len = end - client->buf_in - processed + 1;
+		ft_memmove(buffer, client->buf_in + processed, len);
+		buffer[len] = '\0';
+		broadcast(client->id, buffer);
+		processed += len;
+		end = strstr(client->buf_in + processed, "\n");
+	}
+	client->offset_in -= processed;
+	ft_memmove(client->buf_in, client->buf_in + processed, client->offset_in);
+	return (1);
+}
+
+/* Put 'str' at the end of the output buffer for each client. */
+void	broadcast(int source, char *str)
+{
+	char		buffer[BUFFER_SIZE];
+	t_client	*client;
+	int			len;
+
+	if (source == -1)
+		sprintf(buffer, "server: %s", str);
+	else
+		sprintf(buffer, "client %d: %s", source, str);
+	printf("%s", buffer);
+	len = strlen(buffer);
+	client = g_clients;
+	while (client != NULL)
+	{
+		if (client->id != source) {
+			strcat(client->buf_out, buffer);
+			client->offset_out += len;
+		}
+		client = client->next;
+	}
+}
+
+/* Send data to socket */
+int	transmit(t_client *client)
+{
+	// dummy function, to be implemented
+	client->offset_out = 0;
+	return (1);
 }
 
 int main(int argc, char **argv) {
