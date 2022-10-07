@@ -4,6 +4,7 @@
 #include <netdb.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/select.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
@@ -36,7 +37,9 @@ void		client_remove(t_client *client);
 void		client_clear(void);
 
 int			setup_listener(int port);
-
+int			get_max_fd(int listener);
+void		wait_events(fd_set *rfds, fd_set *wfds, int listener);
+void		manage_events(fd_set *rfds, fd_set *wfds, int listener);
 
 /* Write string 's' to file descriptor 'fd' */
 void	ft_putstr_fd(const char *s, int fd)
@@ -214,21 +217,102 @@ int	setup_listener(int port)
 	return sockfd;
 }
 
+/* Return the largest file descriptor in use by listener and g_clients */
+int	get_max_fd(int listener)
+{
+	int			retval;
+	t_client	*this;
+
+	retval = listener;
+	this = g_clients;
+	while (this != NULL)
+	{
+		if (this->fd > retval)
+			retval = this->fd;
+		this = this->next;
+	}
+	return (retval);
+}
+
+/* Call select and wait for specific events */
+void	wait_events(fd_set *rfds, fd_set *wfds, int listener)
+{
+	t_client	*this;
+
+	FD_ZERO(rfds);
+	FD_ZERO(wfds);
+	FD_SET(listener, rfds);
+	this = g_clients;
+	while (this != NULL)
+	{
+		FD_SET(this->fd, rfds);
+		if (this->offset_out > 0)
+			FD_SET(this->fd, wfds);
+		this = this->next;
+	}
+	printf("Polling...\n");
+	select(get_max_fd(listener) + 1, rfds, wfds, NULL, NULL);
+}
+
+/* Handle connection, read or write as necessary */
+void	manage_events(fd_set *rfds, fd_set *wfds, int listener)
+{
+	int					connfd;
+	socklen_t			len;
+	struct sockaddr_in	cli;
+	t_client			*this;
+	t_client			*next;
+
+	if (FD_ISSET(listener, rfds))
+	{
+		len = sizeof(cli);
+		connfd = accept(listener, (struct sockaddr *)&cli, &len);
+		if (connfd < 0)
+			ft_fatal();
+    	else
+        	printf("server accept the client...\n");
+		client_add(client_new(connfd));
+	}
+	this = g_clients;
+	while (this != NULL)
+	{
+		next = this->next;
+		if (FD_ISSET(this->fd, rfds))
+		{
+			// recv from socket and extract messages
+			// dummy operation to prevent infinite loop
+			if (this->offset_in == 0)
+			{
+				client_remove(this);
+				this = NULL;
+			}
+		}
+
+		if (this && FD_ISSET(this->fd, wfds))
+		{
+			// send to socket
+			// dummy operation to prevent infinite loop
+			if (this->offset_out == 0)
+				client_remove(this);
+		}
+		this = next;
+	}
+}
+
 int main(int argc, char **argv) {
 	int	listener;
-	int	connfd;
-	socklen_t	len;
-	struct sockaddr_in cli; 
+	fd_set	rfds;
+	fd_set	wfds;
 
 	if (argc != 2)
 		ft_error("Wrong number of arguments\n");
 	listener = setup_listener(atoi(argv[1]));
-	len = sizeof(cli);
-	connfd = accept(listener, (struct sockaddr *)&cli, &len);
-	if (connfd < 0)
-		ft_fatal();
-    else
-        printf("server acccept the client...\n");
+	while (1)
+	{
+		wait_events(&rfds, &wfds, listener);
+		manage_events(&rfds, &wfds, listener);
+	}
+	close(listener);
 	client_clear();
 }
 
