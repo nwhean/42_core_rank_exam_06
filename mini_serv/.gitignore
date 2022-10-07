@@ -1,0 +1,14 @@
+# subject files
+*.txt
+
+# given .c and .py file
+main.c
+server.py
+
+# Makefile
+Makefile
+
+# object files and executable
+*.o
+mini_serv
+
