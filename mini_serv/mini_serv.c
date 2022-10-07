@@ -256,9 +256,7 @@ void	manage_events(fd_set *rfds, fd_set *wfds, int listener)
 
 		if (this && FD_ISSET(this->fd, wfds))
 		{
-			// send to socket
-			// dummy operation to prevent infinite loop
-			if (this->offset_out == 0)
+			if (!transmit(this))
 				client_remove(this);
 		}
 		this = next;
@@ -323,8 +321,17 @@ void	broadcast(int source, char *str)
 /* Send data to socket */
 int	transmit(t_client *client)
 {
-	// dummy function, to be implemented
-	client->offset_out = 0;
+	ssize_t	byte;
+
+	byte = send(client->fd, client->buf_out, client->offset_out, 0);
+	if (byte < 0)
+		return (0);
+	if (byte > 0)
+	{
+		client->offset_out -= byte;
+		ft_memmove(client->buf_out, client->buf_out + byte, client->offset_out);
+		client->buf_out[client->offset_out] = '\0';
+	}
 	return (1);
 }
 
