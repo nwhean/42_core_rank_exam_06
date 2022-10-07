@@ -161,8 +161,6 @@ int	setup_listener(int port)
 	sockfd = socket(AF_INET, SOCK_STREAM, 0); 
 	if (sockfd == -1)
 	   ft_fatal();	
-	else
-		printf("Socket successfully created..\n"); 
 	bzero(&servaddr, sizeof(servaddr)); 
 
 	// assign IP, PORT 
@@ -173,8 +171,6 @@ int	setup_listener(int port)
 	// Binding newly created socket to given IP and verification 
 	if ((bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr))) != 0)
 		ft_fatal();
-	else
-		printf("Socket successfully binded..\n");
 	if (listen(sockfd, 10) != 0)
 		ft_fatal();
 	return sockfd;
@@ -213,7 +209,6 @@ void	wait_events(fd_set *rfds, fd_set *wfds, int listener)
 			FD_SET(this->fd, wfds);
 		this = this->next;
 	}
-	printf("Polling...\n");
 	select(get_max_fd(listener) + 1, rfds, wfds, NULL, NULL);
 }
 
@@ -232,8 +227,6 @@ void	manage_events(fd_set *rfds, fd_set *wfds, int listener)
 		connfd = accept(listener, (struct sockaddr *)&cli, &len);
 		if (connfd < 0)
 			ft_fatal();
-    	else
-        	printf("server accept the client...\n");
 		client_add(client_new(connfd));
 	}
 	this = g_clients;
@@ -305,7 +298,6 @@ void	broadcast(int source, char *str)
 		sprintf(buffer, "server: %s", str);
 	else
 		sprintf(buffer, "client %d: %s", source, str);
-	printf("%s", buffer);
 	len = strlen(buffer);
 	client = g_clients;
 	while (client != NULL)
