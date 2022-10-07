@@ -7,14 +7,35 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#define BUFFER_SIZE	65536
+
+typedef struct s_client
+{
+	int				id;
+	int				fd;
+	int				offset_in;
+	int				offset_out;
+	char			buf_in[BUFFER_SIZE];
+	char			buf_out[BUFFER_SIZE];
+	struct s_client	*next;
+}	t_client;
+
+// global variables
+t_client	*g_clients;
+int			g_id;
 
 // function prototypes
-void	ft_putstr_fd(const char *s, int fd);
-void	ft_error(const char *s);
-void	ft_fatal();
-void	*ft_memmove(void *dst, const void *src, size_t len);
+void		ft_putstr_fd(const char *s, int fd);
+void		ft_error(const char *s);
+void		ft_fatal();
+void		*ft_memmove(void *dst, const void *src, size_t len);
 
-int		setup_listener(int port);
+t_client	*client_new(int fd);
+void		client_add(t_client *client);
+void		client_remove(t_client *client);
+void		client_clear(void);
+
+int			setup_listener(int port);
 
 
 /* Write string 's' to file descriptor 'fd' */
@@ -98,6 +119,73 @@ char *str_join(char *buf, char *add)
 	return (newbuf);
 }
 
+/* Allocate memory and return a new t_client data structure */
+t_client	*client_new(int fd)
+{
+	t_client	*new;
+
+	new = malloc(sizeof(t_client));
+	if (new == NULL)
+		ft_fatal();
+	new->id = g_id++;
+	new->fd = fd;
+	new->offset_in = 0;
+	new->offset_out = 0;
+	new->buf_in[0] = '\0';
+	new->buf_out[0] = '\0';
+	new->next = NULL;
+	return (new);
+}
+
+/* Add a new t_client to g_clients linked list */
+void	client_add(t_client *client)
+{
+	t_client	*this;
+
+	if (g_clients == NULL)
+		g_clients = client;
+	else
+	{
+		this = g_clients;
+		while (this->next != NULL)
+			this = this->next;
+		this->next = client;
+	}
+}
+
+
+/* Remove a client from g_clients linked list */
+void	client_remove(t_client *client)
+{
+	t_client	*this;
+
+	if (g_clients == client)
+		g_clients = client->next;
+	else
+	{
+		this = g_clients;
+		while (this->next != client)
+			this = this->next;
+		this->next = client->next;
+	}
+	close(client->fd);
+	free(client);
+}
+
+/* Free all the memory allocated for g_clients linked list */
+void		client_clear(void)
+{
+	t_client	*next;
+
+	while (g_clients != NULL)
+	{
+		next = g_clients->next;
+		close(g_clients->fd);
+		free(g_clients);
+		g_clients = next;
+	}
+}
+
 int	setup_listener(int port)
 {
 	int sockfd;
@@ -141,5 +229,6 @@ int main(int argc, char **argv) {
 		ft_fatal();
     else
         printf("server acccept the client...\n");
+	client_clear();
 }
 
