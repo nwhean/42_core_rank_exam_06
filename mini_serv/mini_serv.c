@@ -14,6 +14,7 @@ void	ft_error(const char *s);
 void	ft_fatal();
 void	*ft_memmove(void *dst, const void *src, size_t len);
 
+int		setup_listener(int port);
 
 
 /* Write string 's' to file descriptor 'fd' */
@@ -97,21 +98,15 @@ char *str_join(char *buf, char *add)
 	return (newbuf);
 }
 
-
-int main(int argc, char **argv) {
-	if (argc != 2)
-		ft_error("Wrong number of arguments\n");
-
-	int sockfd, connfd;
-	socklen_t	len;
-	struct sockaddr_in servaddr, cli; 
+int	setup_listener(int port)
+{
+	int sockfd;
+	struct sockaddr_in servaddr;
 
 	// socket create and verification 
 	sockfd = socket(AF_INET, SOCK_STREAM, 0); 
-	if (sockfd == -1) { 
-		printf("socket creation failed...\n"); 
-		exit(0); 
-	} 
+	if (sockfd == -1)
+	   ft_fatal();	
 	else
 		printf("Socket successfully created..\n"); 
 	bzero(&servaddr, sizeof(servaddr)); 
@@ -119,25 +114,31 @@ int main(int argc, char **argv) {
 	// assign IP, PORT 
 	servaddr.sin_family = AF_INET; 
 	servaddr.sin_addr.s_addr = htonl(2130706433); //127.0.0.1
-	servaddr.sin_port = htons(atoi(argv[1]));
+	servaddr.sin_port = htons(port);
   
 	// Binding newly created socket to given IP and verification 
-	if ((bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr))) != 0) { 
-		printf("socket bind failed...\n"); 
-		exit(0); 
-	} 
+	if ((bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr))) != 0)
+		ft_fatal();
 	else
 		printf("Socket successfully binded..\n");
-	if (listen(sockfd, 10) != 0) {
-		printf("cannot listen\n"); 
-		exit(0); 
-	}
+	if (listen(sockfd, 10) != 0)
+		ft_fatal();
+	return sockfd;
+}
+
+int main(int argc, char **argv) {
+	int	listener;
+	int	connfd;
+	socklen_t	len;
+	struct sockaddr_in cli; 
+
+	if (argc != 2)
+		ft_error("Wrong number of arguments\n");
+	listener = setup_listener(atoi(argv[1]));
 	len = sizeof(cli);
-	connfd = accept(sockfd, (struct sockaddr *)&cli, &len);
-	if (connfd < 0) { 
-        printf("server acccept failed...\n"); 
-        exit(0); 
-    } 
+	connfd = accept(listener, (struct sockaddr *)&cli, &len);
+	if (connfd < 0)
+		ft_fatal();
     else
         printf("server acccept the client...\n");
 }
