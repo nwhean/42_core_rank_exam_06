@@ -284,6 +284,7 @@ int	extract_message(t_client *client)
 	}
 	client->offset_in -= processed;
 	ft_memmove(client->buf_in, client->buf_in + processed, client->offset_in);
+	client->buf_in[client->offset_in] = '\0';
 	return (1);
 }
 
