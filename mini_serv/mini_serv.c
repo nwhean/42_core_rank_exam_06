@@ -12,6 +12,8 @@
 void	ft_putstr_fd(const char *s, int fd);
 void	ft_error(const char *s);
 void	ft_fatal();
+void	*ft_memmove(void *dst, const void *src, size_t len);
+
 
 
 /* Write string 's' to file descriptor 'fd' */
@@ -31,6 +33,21 @@ void	ft_error(const char *s)
 void	ft_fatal()
 {
 	ft_error("Fatal error\n");
+}
+
+/* Copies len bytes from string src to string dst. */
+void	*ft_memmove(void *dst, const void *src, size_t len)
+{
+	char		*d;
+	const char	*s;
+
+	d = dst + len;
+	s = src + len;
+	while (len-- > 0)
+	{
+		*--d = *--s;
+	}
+	return (dst);
 }
 
 int extract_message(char **buf, char **msg)
