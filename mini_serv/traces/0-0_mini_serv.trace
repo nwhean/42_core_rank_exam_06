@@ -1,0 +1,179 @@
+= Host-specific information ====================================================
+$> hostname; uname -msr
+u90z06s03.42kl.edu.my
+Darwin 19.6.0 x86_64
+$> date
+Fri Oct  7 16:50:35 +08 2022
+$> gcc --version
+Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/c++/4.2.1
+Apple clang version 12.0.0 (clang-1200.0.32.28)
+Target: x86_64-apple-darwin19.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+$> clang --version
+Apple clang version 12.0.0 (clang-1200.0.32.28)
+Target: x86_64-apple-darwin19.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+
+= User files collection ========================================================
+Collecting user files from Vogsphere
+Repository URL: git@vogsphere.42kl.edu.my:exam-2022-10-07/weng_exam-rank-06_exam_21h48m03s.git
+
+= Git history ==================================================================
+$> git -C /tmp/tmpf9n8j3cw/user log --pretty='%H - %an, %ad : %s'
+5e5e6e040d233d457b66e99a2c72e19ae09502cd - Exam 42, Fri Oct 7 16:46:56 2022 +0800 : Implemented transmit function
+da0181c338ee536a21274dde943cfe71db3f17c4 - Exam 42, Fri Oct 7 16:39:14 2022 +0800 : Added extract_message and broadcast functions
+a87be6386c076c73775030f3e6a0e054b812c017 - Exam 42, Fri Oct 7 16:05:45 2022 +0800 : Removed unnecessary functions
+3937cb5285382f3af0b617f3cc0181f472dd58f1 - Exam 42, Fri Oct 7 16:03:54 2022 +0800 : Added wait_events and manage_events functions
+43912348e1006554dbbd87f5f594e59156908abe - Exam 42, Fri Oct 7 15:31:08 2022 +0800 : Added t_client data structure and related functions
+843fb0d3fcd321a7d270209e5965c91b446115e7 - Exam 42, Fri Oct 7 15:09:12 2022 +0800 : Refactored setup_listener function from main
+d85fe95fc020ce87246186e38689acfe2a27eaa5 - Exam 42, Fri Oct 7 14:59:48 2022 +0800 : Added ft_memmove
+68b55b82f47de2eae7666317d4abc5a77c16f11d - Exam 42, Fri Oct 7 14:54:44 2022 +0800 : Added some string functions
+aaae86d33999c47a8d892e1b3b61539863cd3f23 - Exam 42, Fri Oct 7 14:39:18 2022 +0800 : Added Makefile and copied main.c as mini_serv.c
+e2e7421fc3ce278b6a8e01ac546811d81438da07 - Exam 42, Fri Oct 7 14:34:53 2022 +0800 : Initial commit
+ 
+= Collected files ==========================================
+$> ls -lAR /tmp/tmpf9n8j3cw/user
+total 8
+-rw-r--r--  1 root  wheel  2886 Oct  7 16:50 __GIT_HISTORY
+drwxr-xr-x  4 root  wheel   128 Oct  7 16:50 mini_serv
+
+/tmp/tmpf9n8j3cw/user/mini_serv:
+total 24
+-rw-r--r--  1 root  wheel   156 Oct  7 16:50 .gitignore
+-rw-r--r--  1 root  wheel  7310 Oct  7 16:50 mini_serv.c
+ 
+= mini_serv ====================================================================
+
+================================================================================
+Generating test 1
+Cmd ----------------------------------------------------------------------------
+#EXE_NAME#
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 2
+Cmd ----------------------------------------------------------------------------
+#EXE_NAME# 22
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 3
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated3.test 9836898 | sort
+-----------------------------------------------------------------------
+---------
+Done
+================================================================================
+
+================================================================================
+Generating test 4
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated4.test 30874268 | sort
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 5
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated5.test 33553503 | sort
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 6
+Cmd ------------------------
+----------------------------------------------------
+./tester #EXE_NAME# generated6.test 26131624 | sort
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 7
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated7.test 31004421 | sort
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 8
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated8.test 28412114 | sort
+--------------------------------------------------------------------------------
+Done
+=================================
+===============================================
+
+================================================================================
+Generating test 9
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated9.test 13924946 | sort
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+
+
+$> gcc -Wextra -Wall -Werror fcntl.c mini_serv.c -o user_exe 
+
+
+
+__OSSwapInt16
+___darwin_fd_isset
+_broadcast
+_client_add
+_client_clear
+_client_new
+_client_remove
+_extract_message
+_ft_error
+_ft_fatal
+_ft_memmove
+_ft_putstr_fd
+_g_clients
+_g_id
+_get_max_fd
+_main
+_manage_events
+_setup_listener
+_transmit
+_wait_events
+
+
+
+__sprintf_chk
+__stack_chk_fail
+__stack_chk_guard
+__strcat_chk
+accept
+atoi
+bind
+close
+exit
+free
+listen
+malloc
+memset
+printf
+recv
+select$1050
+send
+socket
+strlen
+strstr
+write
+
+
+Forbidden function call in 'mini_serv.c': 'printf'
+Grade: -42
+
+= Final grade: -42 =============================================================

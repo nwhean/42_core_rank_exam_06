@@ -1,0 +1,611 @@
+= Host-specific information ====================================================
+$> hostname; uname -msr
+u81z01s03.42kl.edu.my
+Darwin 19.6.0 x86_64
+$> date
+Fri Oct  7 16:58:53 +08 2022
+$> gcc --version
+Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/c++/4.2.1
+Apple clang version 12.0.0 (clang-1200.0.32.28)
+Target: x86_64-apple-darwin19.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+$> clang --version
+Apple clang version 12.0.0 (clang-1200.0.32.28)
+Target: x86_64-apple-darwin19.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+
+= User files collection ========================================================
+Collecting user files from Vogsphere
+Repository URL: git@vogsphere.42kl.edu.my:exam-2022-10-07/weng_exam-rank-06_exam_21h48m03s.git
+
+= Git history ==================================================================
+$> git -C /tmp/tmpnvfir0y4/user log --pretty='%H - %an, %ad : %s'
+ce53e5005b00d7a6ca2171b079dd1e4d1a3ae505 - Exam 42, Fri Oct 7 16:55:49 2022 +0800 : Removed forbidden function printf
+5e5e6e040d233d457b66e99a2c72e19ae09502cd - Exam 42, Fri Oct 7 16:46:56 2022 +0800 : Implemented transmit function
+da0181c338ee536a21274dde943cfe71db3f17c4 - Exam 42, Fri Oct 7 16:39:14 2022 +0800 : Added extract_message and broadcast functions
+a87be6386c076c73775030f3e6a0e054b812c017 - Exam 42, Fri Oct 7 16:05:45 2022 +0800 : Removed unnecessary functions
+3937cb5285382f3af0b617f3cc0181f472dd58f1 - Exam 42, Fri Oct 7 16:03:54 2022 +0800 : Added wait_events and manage_events functions
+43912348e1006554dbbd87f5f594e59156908abe - Exam 42, Fri Oct 7 15:31:08 2022 +0800 : Added t_client data structure and related functions
+843fb0d3fcd321a7d270209e5965c91b446115e7 - Exam 42, Fri Oct 7 15:09:12 2022 +0800 : Refactored setup_listener function from main
+d85fe95fc020ce87246186e38689acfe2a27eaa5 - Exam 42, Fri Oct 7 14:59:48 2022 +0800 : Added ft_memmove
+68b55b82f47de2eae7666317d4abc5a77c16f11d - Exam 42, Fri Oct 7 14:54:44 2022 +0800 : Added some string functions
+aaae86d33999c47a8d892e1b3b61539863cd3f23 - Exam 42, Fri Oct 7 14:39:18 2022 +0800 : Added Makefile and copied main.c as mini_serv.c
+e2e7421fc3ce278b6a8e01ac546811d81438da07 - Exam 42, Fri Oct 7 14:34:53 2022 +0800 : Initial commit
+ 
+= Collected files ==========================================
+$> ls -lAR /tmp/tmpnvfir0y4/user
+total 8
+-rw-r--r--  1 root  wheel  3126 Oct  7 16:58 __GIT_HISTORY
+drwxr-xr-x  4 root  wheel   128 Oct  7 16:58 mini_serv
+
+/tmp/tmpnvfir0y4/user/mini_serv:
+total 24
+-rw-r--r--  1 root  wheel   156 Oct  7 16:58 .gitignore
+-rw-r--r--  1 root  wheel  7100 Oct  7 16:58 mini_serv.c
+ 
+= mini_serv ====================================================================
+
+================================================================================
+Generating test 1
+Cmd ----------------------------------------------------------------------------
+#EXE_NAME#
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 2
+Cmd ----------------------------------------------------------------------------
+#EXE_NAME# 22
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 3
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated3.test 29751109 | sort
+----------------------------------------------------------------------
+----------
+Done
+================================================================================
+
+================================================================================
+Generating test 4
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated4.test 13006544 | sort
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 5
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated5.test 5653830 | sort
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 6
+Cmd ------------------------
+----------------------------------------------------
+./tester #EXE_NAME# generated6.test 20140857 | sort
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 7
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated7.test 24931989 | sort
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+================================================================================
+Generating test 8
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated8.test 18002076 | sort
+--------------------------------------------------------------------------------
+Done
+=================================
+===============================================
+
+================================================================================
+Generating test 9
+Cmd ----------------------------------------------------------------------------
+./tester #EXE_NAME# generated9.test 8720635 | sort
+--------------------------------------------------------------------------------
+Done
+================================================================================
+
+
+
+$> gcc -Wextra -Wall -Werror fcntl.c mini_serv.c -o user_exe 
+
+
+
+__OSSwapInt16
+___darwin_fd_isset
+_broadcast
+_client_add
+_client_clear
+_client_new
+_client_remove
+_extract_message
+_ft_error
+_ft_fatal
+_ft_memmove
+_ft_putstr_fd
+_g_clients
+_g_id
+_get_max_fd
+_main
+_manage_events
+_setup_listener
+_transmit
+_wait_events
+
+
+
+__sprintf_chk
+__stack_chk_fail
+__stack_chk_guard
+__strcat_chk
+accept
+atoi
+bind
+close
+exit
+free
+listen
+malloc
+memset
+recv
+select$1050
+send
+socket
+strlen
+strstr
+write
+
+
+$> gcc -Wextra -Wall -Werror fcntl.c main.c -o ref_exe 
+
+
+= Test 1 ===================================================
+total 32
+-rwxr-xr-x  1 deepthought  101  14540 Oct  7 08:59 fb72wbgiihw36tu0pzywm2bu
+
+
+$> ./fb72wbgiihw36tu0pzywm2bu
+Wrong number of arguments
+
+
+
+
+Command 'kill -9 -1 ' got killed by a SIGKILL (Signal -9)
+total 32
+-rwxr-xr-x  1 deepthought  101  14516 Oct  7 08:59 fb72wbgiihw36tu0pzywm2bu
+
+
+$> ./fb72wbgiihw36tu0pzywm2bu
+Wrong number of arguments
+
+
+$> diff -U 3 user_output_test1 test1.output | cat -e
+
+
+Diff OK :D
+= Test 2 ===================================================
+total 32
+-rwxr-xr-x  1 deepthought  101  14540 Oct  7 08:59 m4ci1kuijz8tpqibh9el8gqn
+
+
+$> ./m4ci1kuijz8tpqibh9el8gqn 22
+Fatal error
+
+
+
+
+Command 'kill -9 -1 ' got killed by a SIGKILL (Signal -9)
+total 32
+-rwxr-xr-x  1 deepthought  101  14516 Oct  7 08:59 m4ci1kuijz8tpqibh9el8gqn
+
+
+$> ./m4ci1kuijz8tpqibh9el8gqn 22
+Fatal error
+
+
+$> diff -U 3 user_output_test2 test2.output | cat -e
+
+
+Diff OK :D
+= Test 3 ===================================================
+total 1112
+-rw-r--r--  1 deepthought  101       0 Oct  7 08:59 generated3.test
+-rwxr-xr-x  1 deepthought  101   14540 Oct  7 08:59 lmiqydq1csf9r8abnt3p79k6
+-rwxr-xr-x  1 deepthought  101  551096 Oct  7 08:59 tester
+
+
+$> ./tester ./lmiqydq1csf9r8abnt3p79k6 generated3.test 29751109 | sort
+
+
+
+Command 'kill -9 -1 ' got killed by a SIGKILL (Signal -9)
+total 1112
+-rw-r--r--  1 deepthought  101       0 Oct  7 08:59 generated3.test
+-rwxr-xr-x  1 deepthought  101   14516 Oct  7 08:59 lmiqydq1csf9r8abnt3p79k6
+-rwxr-xr-x  1 deepthought  101  551096 Oct  7 08:59 tester
+
+
+$> ./tester ./lmiqydq1csf9r8abnt3p79k6 generated3.test 29751109 | sort
+
+$> diff -U 3 user_output_test3 test3.output | cat -e
+
+
+Diff OK :D
+= Test 4 ===================================================
+total 1120
+-rw-r--r--  1 deepthought  101      15 Oct  7 08:59 generated4.test
+-rwxr-xr-x  1 deepthought  101  551096 Oct  7 08:59 tester
+-rwxr-xr-x  1 deepthought  101   14540 Oct  7 08:59 z1jkcjcewlna1k1u0i74dbto
+
+
+$> ./tester ./z1jkcjcewlna1k1u0i74dbto generated4.test 13006544 | sort
+received 1: server: client 1 just arrived
+received 2: server: client 0 just left
+
+
+
+
+Command 'kill -9 -1 ' got killed by a SIGKILL (Signal -9)
+total 1120
+-rw-r--r--  1 deepthought  101      15 Oct  7 08:59 generated4.test
+-rwxr-xr-x  1 deepthought  101  551096 Oct  7 08:59 tester
+-rwxr-xr-x  1 deepthought  101   14516 Oct  7 08:59 z1jkcjcewlna1k1u0i74dbto
+
+
+$> ./tester ./z1jkcjcewlna1k1u0i74dbto generated4.test 13006544 | sort
+received 1: server: client 1 just arrived
+received 2: server: client 0 just left
+
+
+$> diff -U 3 user_output_test4 test4.output | cat -e
+
+
+Diff OK :D
+= Test 5 ===================================================
+total 1120
+-rw-r--r--  1 deepthought  101      19 Oct  7 08:59 generated5.test
+-rwxr-xr-x  1 deepthought  101   14540 Oct  7 08:59 q9hm5hfbqbgdlpea9stn376f
+-rwxr-xr-x  1 deepthought  101  551096 Oct  7 08:59 tester
+
+
+$> ./tester ./q9hm5hfbqbgdlpea9stn376f generated5.test 5653830 | sort
+received 1: server: client 1 just arrived
+received 2: client 0: 
+received 2: server: client 0 just left
+
+
+
+
+Command 'kill -9 -1 ' got killed by a SIGKILL (Signal -9)
+total 1120
+-rw-r--r--  1 deepthought  101      19 Oct  7 08:59 generated5.test
+-rwxr-xr-x  1 deepthought  101   14516 Oct  7 08:59 q9hm5hfbqbgdlpea9stn376f
+-rwxr-xr-x  1 deepthought  101  551096 Oct  7 08:59 tester
+
+
+$> ./tester ./q9hm5hfbqbgdlpea9stn376f generated5.test 5653830 | sort
+received 1: server: client 1 just arrived
+received 2: client 0: 
+received 2: server: client 0 just left
+
+
+$> diff -U 3 user_output_test5 test5.output | cat -e
+
+
+Diff OK :D
+= Test 6 ===================================================
+total 1120
+-rw-r--r--  1 deepthought  101      73 Oct  7 08:59 generated6.test
+-rwxr-xr-x  1 deepthought  101   14540 Oct  7 08:59 j8yibhrmlstctme2ze77h42v
+-rwxr-xr-x  1 deepthought  101  551096 Oct  7 08:59 tester
+
+
+$> ./tester ./j8yibhrmlstctme2ze77h42v generated6.test 20140857 | sort
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: server: client 1 just arrived
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: clie
+nt 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: server: client 0 just left
+
+
+
+
+Command 'kill -9 -1 ' got killed by a SIGKILL (Signal -9)
+total 1120
+-rw-r--r--  1 deepthought  101      73 Oct  7 08:59 generated6.test
+-rwxr-xr-x  1 deepthought  101   14516 Oct  7 08:59 j8yibhrmlstctme2ze77h42v
+-rwxr-xr-x  1 deepthought  101  551096 Oct  7 08:59 tester
+
+
+$> ./tester ./j8yibhrmlstctme2ze77h42v generated6.test 20140857 | sort
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: server: client 1 just arrived
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: clie
+nt 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: server: client 0 just left
+
+
+$> diff -U 3 user_output_test6 test6.output | cat -e
+
+
+Diff OK :D
+= Test 7 ===================================================
+total 1120
+-rw-r--r--  1 deepthought  101     673 Oct  7 08:59 generated7.test
+-rwxr-xr-x  1 deepthought  101   14540 Oct  7 08:59 p4y7uuv3ice4e027kz5paqf0
+-rwxr-xr-x  1 deepthought  101  551096 Oct  7 08:59 tester
+
+
+$> ./tester ./p4y7uuv3ice4e027kz5paqf0 generated7.test 24931989 | sort
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: oyt7uacg4ypf30jvhymd9uxne5hoaa8zthiqsk6393o4v9wy22re341aodwtrvhp4agkry98pdijjus8r3vcs8d4xskym4lc4g92
+received 1: client 1: vfuvfxxsal8ghl7e864xewz46bs668768xrvi3jn2yjo37ru72o1nguddk4be9mnqwta7unmbgfnnlruiygnmwmopcqwp1hu11sz
+received 1: server: client 1 just arrived
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: ov10wiuwtgvsb4d3dpurw3c78f6i94si4l2vrtnsd9l9a6f8fg3qhd469x70pcttp44jgk0hgux5tacqcy29je0wr2urxzi2vag7
+received 2: client 0: s96hzdeda6ohmoc1f4m3v6698djfrrjkyordp6v1zk1z07eo4j8ve2klxr7aqyii5eytwbcm5mxs9u66iq93umd0skhgvmtz6d50
+received 2: client 0: xv37ehd87xvrpoil2p0veu0rokcowba5vixk9gi6uhjwfa14dhoil45z2p9cl631k71jhkgw8sz6z3tnv58gfqdhsd9wz51yfbfh
+received 2: server: client 0 just left
+
+
+
+
+Command 'kill -9 -1 ' got killed by a SIGKILL (Signal -9)
+total 1120
+-rw-r--r--  1 deepthought  101     673 Oct  7 08:59 generated7.test
+-rwxr-xr-x  1 deepthought  101   14516 Oct  7 08:59 p4y7uuv3ice4e027kz5paqf0
+-rwxr-xr-x  1 deepthought  101  551096 Oct  7 08:59 tester
+
+
+$> ./tester ./p4y7uuv3ice4e027kz5paqf0 generated7.test 24931989 | sort
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: 
+received 1: client 1: h1qdgxgixw8j69yb7158ssz135jq5ufe48mpwvibfc0azpv44xi4xo6hrv0cueh92rj770nujda66j29gwksx4w43o4zbxg9i8nb
+received 1: client 1: oyt7uacg4ypf30jvhymd9uxne5hoaa8zthiqsk6393o4v9wy22re341aodwtrvhp4agkry98pdijjus8r3vcs8d4xskym4lc4g92
+received 1: client 1: vfuvfxxsal8ghl7e864xewz46bs668768xrvi3jn2yjo37ru72o1nguddk4be9mnqwta7unmbgfnnlruiygnmwmopcqwp1hu11sz
+received 1: server: client 1 just arrived
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: cli
+ent 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: 
+received 2: client 0: ov10wiuwtgvsb4d3dpurw3c78f6i94si4l2vrtnsd9l9a6f8fg3qhd469x70pcttp44jgk0hgux5tacqcy29je0wr2urxzi2vag7
+received 2: client 0: s96hzdeda6ohmoc1f4m3v6698djfrrjkyordp6v1zk1z07eo4j8ve2klxr7aqyii5eytwbcm5mxs9u66iq93umd0skhgvmtz6d50
+received 2: client 0: xv37ehd87xvrpoil2p0veu0rokcowba5vixk9gi6uhjwfa14dhoil45z2p9cl631k71jhkgw8sz6z3tnv58gfqdhsd9wz51yfbfh
+received 2: server: client 0 just left
+
+
+$> diff -U 3 user_output_test7 test7.output | cat -e
+--- user_output_test7	2022-10-07 08:59:35.000000000 +0000$
++++ test7.output	2022-10-07 08:59:38.000000000 +0000$
+@@ -17,6 +17,11 @@$
+ received 1: client 1: $
+ received 1: client 1: $
+ received 1: client 1: $
++received 1: client 1: $
++received 1: client 1: $
++received 1: client 1: $
++received 1: client 1: $
++received 1: client 1: h1qdgxgixw8j69yb7158ssz135jq5ufe48mpwvibfc0azpv44xi4xo6hrv0cueh92rj770nujda66j29gwksx4w43o4zbxg9i8nb$
+ received 1: client 1: oyt7uacg4ypf30jvhymd9uxne5hoaa8zthiqsk6393o4v9wy22re341aodwtrvhp4agkry98pdijjus8r3vcs8d4xskym4lc4g92$
+ received 1: client 1: vfuvfxxsal8ghl7e864xewz46bs668768xrvi3jn2yjo37ru72o1nguddk4be9mnqwta7unmbgfnnlruiygnmwmopcqwp1hu11sz$
+ received 1: server: client 1 just arrived$
+
+
+--- user_output_test7	2022-10-07 08:59:35.000000000 +0000$
++++ test7.output	2022-10-07 08:59:38.000000000 +0000$
+@@ -17,6 +17,11 @@$
+ received 1: client 1: $
+ received 1: client 1: $
+ received 1: client 1: $
++received 1: client 1: $
++received 1: client 1: $
++received 1: client 1: $
++received 1: client 1: $
++received 1: client 1: h1qdgxgixw8j69yb7158ssz135jq5ufe48mpwvibfc0azpv44xi4xo6hrv0cueh92rj770nujda66j29gwksx4w43o4zbxg9i8nb$
+ received 1: client 1: oyt7uacg4ypf30jvhymd9uxne5hoaa8zthiqsk6393o4v9wy22re341aodwtrvhp4agkry98pdijjus8r3vcs8d4xskym4lc4g92$
+ received 1: client 1: vfuvfxxsal8ghl7e864xewz46bs668768xrvi3jn2yjo37ru72o1nguddk4be9mnqwta7unmbgfnnlruiygnmwmopcqwp1hu11sz$
+ received 1: server: client 1 just arrived$
+
+Diff KO :(
+Grade: 0
+
+= Final grade: 0 ===============================================================
