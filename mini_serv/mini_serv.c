@@ -28,7 +28,7 @@ int			g_id;
 // function prototypes
 void		ft_putstr_fd(const char *s, int fd);
 void		ft_error(const char *s);
-void		ft_fatal();
+void		ft_fatal(void);
 void		*ft_memmove(void *dst, const void *src, size_t len);
 
 t_client	*client_new(int fd);
@@ -59,7 +59,7 @@ void	ft_error(const char *s)
 }
 
 /* Write "Fatal error\n" to stderror and exit */
-void	ft_fatal()
+void	ft_fatal(void)
 {
 	ft_error("Fatal error\n");
 }
@@ -116,7 +116,6 @@ void	client_add(t_client *client)
 	}
 }
 
-
 /* Remove a client from g_clients linked list */
 void	client_remove(t_client *client)
 {
@@ -139,7 +138,7 @@ void	client_remove(t_client *client)
 }
 
 /* Free all the memory allocated for g_clients linked list */
-void		client_clear(void)
+void	client_clear(void)
 {
 	t_client	*next;
 
@@ -154,26 +153,23 @@ void		client_clear(void)
 
 int	setup_listener(int port)
 {
-	int sockfd;
-	struct sockaddr_in servaddr;
+	int					sockfd;
+	struct sockaddr_in	servaddr;
+	socklen_t			len;
 
-	// socket create and verification 
-	sockfd = socket(AF_INET, SOCK_STREAM, 0); 
+	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd == -1)
-	   ft_fatal();	
-	bzero(&servaddr, sizeof(servaddr)); 
-
-	// assign IP, PORT 
-	servaddr.sin_family = AF_INET; 
-	servaddr.sin_addr.s_addr = htonl(2130706433); //127.0.0.1
+		ft_fatal();
+	len = sizeof(servaddr);
+	bzero(&servaddr, len);
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_addr.s_addr = htonl(2130706433);
 	servaddr.sin_port = htons(port);
-  
-	// Binding newly created socket to given IP and verification 
-	if ((bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr))) != 0)
+	if ((bind(sockfd, (const struct sockaddr *)&servaddr, len)) != 0)
 		ft_fatal();
 	if (listen(sockfd, 10) != 0)
 		ft_fatal();
-	return sockfd;
+	return (sockfd);
 }
 
 /* Return the largest file descriptor in use by listener and g_clients */
@@ -246,7 +242,6 @@ void	manage_events(fd_set *rfds, fd_set *wfds, int listener)
 				}
 			}
 		}
-
 		if (this && FD_ISSET(this->fd, wfds))
 		{
 			if (!transmit(this))
@@ -303,7 +298,8 @@ void	broadcast(int source, char *str)
 	client = g_clients;
 	while (client != NULL)
 	{
-		if (client->id != source && client->buf_out + len < BUFFER_SIZE - 1) {
+		if (client->id != source && client->buf_out + len < BUFFER_SIZE - 1)
+		{
 			strcat(client->buf_out, buffer);
 			client->offset_out += len;
 		}
@@ -328,8 +324,9 @@ int	transmit(t_client *client)
 	return (1);
 }
 
-int main(int argc, char **argv) {
-	int	listener;
+int	main(int argc, char **argv)
+{
+	int		listener;
 	fd_set	rfds;
 	fd_set	wfds;
 
@@ -344,4 +341,3 @@ int main(int argc, char **argv) {
 	close(listener);
 	client_clear();
 }
-
