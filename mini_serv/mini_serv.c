@@ -41,6 +41,7 @@ int			get_max_fd(int listener);
 void		wait_events(fd_set *rfds, fd_set *wfds, int listener);
 void		manage_events(fd_set *rfds, fd_set *wfds, int listener);
 
+void		handle_connection(int listener);
 int			extract_message(t_client *client);
 void		broadcast(int source, char *str);
 int			transmit(t_client *client);
@@ -211,20 +212,11 @@ void	wait_events(fd_set *rfds, fd_set *wfds, int listener)
 /* Handle connection, read or write as necessary */
 void	manage_events(fd_set *rfds, fd_set *wfds, int listener)
 {
-	int					connfd;
-	socklen_t			len;
-	struct sockaddr_in	cli;
 	t_client			*this;
 	t_client			*next;
 
 	if (FD_ISSET(listener, rfds))
-	{
-		len = sizeof(cli);
-		connfd = accept(listener, (struct sockaddr *)&cli, &len);
-		if (connfd < 0)
-			ft_fatal();
-		client_add(client_new(connfd));
-	}
+		handle_connection(listener);
 	this = g_clients;
 	while (this != NULL)
 	{
@@ -249,6 +241,20 @@ void	manage_events(fd_set *rfds, fd_set *wfds, int listener)
 		}
 		this = next;
 	}
+}
+
+/* handle a new incoming connection */
+void	handle_connection(int listener)
+{
+	int					connfd;
+	socklen_t			len;
+	struct sockaddr_in	cli;
+
+	len = sizeof(cli);
+	connfd = accept(listener, (struct sockaddr *)&cli, &len);
+	if (connfd < 0)
+		ft_fatal();
+	client_add(client_new(connfd));
 }
 
 /* Calls recv and broadcast messages to other clients */
