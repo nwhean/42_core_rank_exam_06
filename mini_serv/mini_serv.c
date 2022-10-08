@@ -223,15 +223,10 @@ void	manage_events(fd_set *rfds, fd_set *wfds, int listener)
 		next = this->next;
 		if (FD_ISSET(this->fd, rfds))
 		{
-			// recv from socket and extract messages
-			// dummy operation to prevent infinite loop
-			if (this->offset_in == 0)
+			if (!extract_message(this))
 			{
-				if (!extract_message(this))
-				{
-					client_remove(this);
-					this = NULL;
-				}
+				client_remove(this);
+				this = NULL;
 			}
 		}
 		if (this && FD_ISSET(this->fd, wfds))
