@@ -298,7 +298,7 @@ void	broadcast(int source, char *str)
 	client = g_clients;
 	while (client != NULL)
 	{
-		if (client->id != source && client->buf_out + len < BUFFER_SIZE - 1)
+		if (client->id != source && client->offset_out + len < BUFFER_SIZE - 1)
 		{
 			strcat(client->buf_out, buffer);
 			client->offset_out += len;
