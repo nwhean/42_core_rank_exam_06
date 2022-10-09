@@ -346,21 +346,29 @@ int	extract_message(t_client *client, int is_open)
 /* Put 'str' at the end of the output buffer for each client. */
 void	broadcast(int source, char *str)
 {
-	char		buffer[BUFFER_SIZE];
 	t_client	*client;
+	char		str_source[BUFFER_SIZE];
 	int			len;
 
 	if (source == -1)
-		sprintf(buffer, "server: %s", str);
+		sprintf(str_source, "server: ");
 	else
-		sprintf(buffer, "client %d: %s", source, str);
-	len = strlen(buffer);
+		sprintf(str_source, "client %d: ", source);
+	len = strlen(str_source) + strlen(str);
 	client = g_clients;
 	while (client != NULL)
 	{
-		if (client->id != source && client->offset_out + len < BUFFER_SIZE - 1)
+		if (client->id != source)
 		{
-			strcat(client->buf_out, buffer);
+			while (client->offset_out + len > client->cap_out - 1)
+			{
+				client->cap_out *= 2;
+				client->buf_out = realloc(client->buf_out, client->cap_out);
+				if (!client->buf_out)
+					ft_fatal();
+			}
+			strcat(client->buf_out, str_source);
+			strcat(client->buf_out, str);
 			client->offset_out += len;
 		}
 		client = client->next;
@@ -371,14 +379,25 @@ void	broadcast(int source, char *str)
 int	transmit(t_client *client)
 {
 	ssize_t	byte;
+	ssize_t	processed;
 
+	byte = 1;
+	processed = 0;
+	while (client->offset_out && byte)
+	{
+		byte = send(client->fd, client->buf_out + processed,
+				client->offset_out - processed, 0);
+		if (byte > 0)
+			processed += byte;
+	}
 	byte = send(client->fd, client->buf_out, client->offset_out, 0);
 	if (byte < 0)
 		return (0);
 	if (byte > 0)
 	{
-		client->offset_out -= byte;
-		ft_memmove(client->buf_out, client->buf_out + byte, client->offset_out);
+		client->offset_out -= processed;
+		ft_memmove(client->buf_out, client->buf_out + processed,
+			client->offset_out);
 		client->buf_out[client->offset_out] = '\0';
 	}
 	return (1);
