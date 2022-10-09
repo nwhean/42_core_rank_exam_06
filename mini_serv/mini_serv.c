@@ -16,8 +16,10 @@ typedef struct s_client
 	int				fd;
 	int				offset_in;
 	int				offset_out;
-	char			buf_in[BUFFER_SIZE];
-	char			buf_out[BUFFER_SIZE];
+	int				cap_in;
+	int				cap_out;
+	char			*buf_in;
+	char			*buf_out;
 	struct s_client	*next;
 }	t_client;
 
@@ -30,6 +32,7 @@ void		ft_putstr_fd(const char *s, int fd);
 void		ft_error(const char *s);
 void		ft_fatal(void);
 void		*ft_memmove(void *dst, const void *src, size_t len);
+char		*ft_strchr(const char *s, int c);
 
 t_client	*client_new(int fd);
 void		client_add(t_client *client);
@@ -42,7 +45,9 @@ void		wait_events(fd_set *rfds, fd_set *wfds, int listener);
 void		manage_events(fd_set *rfds, fd_set *wfds, int listener);
 
 void		handle_connection(int listener);
-int			extract_message(t_client *client);
+int			receive(t_client *client);
+int			extract_one(int id, char *buffer, char delimiter);
+int			extract_message(t_client *client, int is_open);
 void		broadcast(int source, char *str);
 int			transmit(t_client *client);
 
@@ -80,6 +85,20 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
+/* Return a pointer to the first occurrence of the character 'c' in 's'. */
+char	*ft_strchr(const char *s, int c)
+{
+	char	ch;
+
+	ch = (char) c;
+	while (*s != ch && *s != '\0')
+		++s;
+	if (*s == ch)
+		return ((char *) s);
+	else
+		return (NULL);
+}
+
 /* Allocate memory and return a new t_client data structure */
 t_client	*client_new(int fd)
 {
@@ -90,8 +109,14 @@ t_client	*client_new(int fd)
 		ft_fatal();
 	new->id = g_id++;
 	new->fd = fd;
+	new->cap_in = BUFFER_SIZE;
+	new->cap_out = BUFFER_SIZE;
 	new->offset_in = 0;
 	new->offset_out = 0;
+	new->buf_in = malloc(sizeof(char) * BUFFER_SIZE);
+	new->buf_out = malloc(sizeof(char) * BUFFER_SIZE);
+	if (!new->buf_in || !new->buf_out)
+		ft_fatal();
 	new->buf_in[0] = '\0';
 	new->buf_out[0] = '\0';
 	new->next = NULL;
@@ -212,8 +237,8 @@ void	wait_events(fd_set *rfds, fd_set *wfds, int listener)
 /* Handle connection, read or write as necessary */
 void	manage_events(fd_set *rfds, fd_set *wfds, int listener)
 {
-	t_client			*this;
-	t_client			*next;
+	t_client	*this;
+	t_client	*next;
 
 	if (FD_ISSET(listener, rfds))
 		handle_connection(listener);
@@ -223,7 +248,7 @@ void	manage_events(fd_set *rfds, fd_set *wfds, int listener)
 		next = this->next;
 		if (FD_ISSET(this->fd, rfds))
 		{
-			if (!extract_message(this))
+			if (!extract_message(this, receive(this)))
 			{
 				client_remove(this);
 				this = NULL;
@@ -252,36 +277,70 @@ void	handle_connection(int listener)
 	client_add(client_new(connfd));
 }
 
-/* Calls recv and broadcast messages to other clients */
-int	extract_message(t_client *client)
+/* Calls recv to get message from socket buffer */
+int	receive(t_client *client)
 {
 	ssize_t	byte;
-	char	buffer[BUFFER_SIZE];
+
+	byte = recv(client->fd, client->buf_in + client->offset_in,
+			client->cap_in - client->offset_in - 1, 0);
+	client->offset_in += byte;
+	client->buf_in[client->offset_in] = '\0';
+	if (byte <= 0)
+		return (0);
+	if (client->offset_in == client->cap_in - 1)
+	{
+		client->cap_in *= 2;
+		client->buf_in = realloc(client->buf_in, client->cap_in);
+		if (!client->buf_in)
+			ft_fatal();
+	}
+	return (1);
+}
+
+/* Extract one message from the client buffer, with a given delimiter */
+int	extract_one(int id, char *buffer, char delimiter)
+{
+	char	*str;
 	char	*end;
+	int		len;
+
+	end = ft_strchr(buffer, delimiter);
+	if (!end)
+		return (0);
+	len = end - buffer + (delimiter != '\0');
+	str = malloc(sizeof(char) * (len + 1));
+	if (!str)
+		ft_fatal();
+	ft_memmove(str, buffer, len);
+	str[len] = '\0';
+	broadcast(id, str);
+	free(str);
+	return (len);
+}
+
+/* Calls recv and broadcast messages to other clients */
+int	extract_message(t_client *client, int is_open)
+{
 	int		processed;
 	int		len;
 
-	byte = recv(client->fd, client->buf_in + client->offset_in,
-			BUFFER_SIZE - client->offset_in - 1, 0);
-	if (byte <= 0)
-		return (0);
-	client->offset_in += byte;
-	client->buf_in[client->offset_in] = '\0';
 	processed = 0;
-	end = strstr(client->buf_in + processed, "\n");
-	while (end != NULL)
+	len = extract_one(client->id, client->buf_in + processed, '\n');
+	while (len != 0)
 	{
-		len = end - client->buf_in - processed + 1;
-		ft_memmove(buffer, client->buf_in + processed, len);
-		buffer[len] = '\0';
-		broadcast(client->id, buffer);
 		processed += len;
-		end = strstr(client->buf_in + processed, "\n");
+		len = extract_one(client->id, client->buf_in + processed, '\n');
+	}
+	if (!is_open)
+	{
+		len = extract_one(client->id, client->buf_in + processed, '\0');
+		processed += len;
 	}
 	client->offset_in -= processed;
 	ft_memmove(client->buf_in, client->buf_in + processed, client->offset_in);
 	client->buf_in[client->offset_in] = '\0';
-	return (1);
+	return (is_open);
 }
 
 /* Put 'str' at the end of the output buffer for each client. */
