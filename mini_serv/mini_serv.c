@@ -326,11 +326,11 @@ int	extract_message(t_client *client, int is_open)
 	int		len;
 
 	processed = 0;
-	len = extract_one(client->id, client->buf_in + processed, '\n');
+	len = 1;
 	while (len != 0)
 	{
-		processed += len;
 		len = extract_one(client->id, client->buf_in + processed, '\n');
+		processed += len;
 	}
 	if (!is_open)
 	{
