@@ -160,6 +160,8 @@ void	client_remove(t_client *client)
 	sprintf(buffer, "client %d just left\n", client->id);
 	broadcast(-1, buffer);
 	close(client->fd);
+	free(client->buf_in);
+	free(client->buf_out);
 	free(client);
 }
 
