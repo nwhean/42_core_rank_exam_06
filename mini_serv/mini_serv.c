@@ -384,24 +384,21 @@ int	transmit(t_client *client)
 
 	byte = 1;
 	processed = 0;
-	while (client->offset_out && byte)
+	while (client->offset_out && byte > 0)
 	{
 		byte = send(client->fd, client->buf_out + processed,
 				client->offset_out - processed, 0);
 		if (byte > 0)
 			processed += byte;
 	}
-	byte = send(client->fd, client->buf_out, client->offset_out, 0);
+	client->offset_out -= processed;
+	ft_memmove(client->buf_out, client->buf_out + processed,
+		client->offset_out);
+	client->buf_out[client->offset_out] = '\0';
 	if (byte < 0)
 		return (0);
-	if (byte > 0)
-	{
-		client->offset_out -= processed;
-		ft_memmove(client->buf_out, client->buf_out + processed,
-			client->offset_out);
-		client->buf_out[client->offset_out] = '\0';
-	}
-	return (1);
+	else
+		return (1);
 }
 
 int	main(int argc, char **argv)
