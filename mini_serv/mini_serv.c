@@ -285,10 +285,10 @@ int	receive(t_client *client)
 
 	byte = recv(client->fd, client->buf_in + client->offset_in,
 			client->cap_in - client->offset_in - 1, 0);
-	client->offset_in += byte;
-	client->buf_in[client->offset_in] = '\0';
 	if (byte <= 0)
 		return (0);
+	client->offset_in += byte;
+	client->buf_in[client->offset_in] = '\0';
 	if (client->offset_in == client->cap_in - 1)
 	{
 		client->cap_in *= 2;
