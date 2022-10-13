@@ -173,8 +173,7 @@ void	client_clear(void)
 	while (g_clients != NULL)
 	{
 		next = g_clients->next;
-		close(g_clients->fd);
-		free(g_clients);
+		client_remove(g_clients);
 		g_clients = next;
 	}
 }
