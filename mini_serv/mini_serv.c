@@ -417,4 +417,5 @@ int	main(int argc, char **argv)
 	}
 	close(listener);
 	client_clear();
+	return (0);
 }
